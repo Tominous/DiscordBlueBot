@@ -46,7 +46,7 @@ public class MainBot {
 
     private static String botOwner;
     public static final CommandParser parser = new CommandParser();
-    //public static  Map<String, Command> commands = new TreeMap<String, Command>();
+    public static  Map<String, Command> commands = new TreeMap<String, Command>();
     public static  Map<String, Command> funCommands = new TreeMap<String, Command>();
     public static  Map<String, Command> modUtilCommands = new TreeMap<String, Command>();
     public static  Map<String, Command> miscCommands = new TreeMap<String, Command>();
@@ -130,7 +130,7 @@ public class MainBot {
 
 
     public MainBot() {
-        //LogSystem logger = new LogSystem();
+        LogSystem logger = new LogSystem();
         try {
             //jdaList instanciation
             //default method as provided in the API
@@ -144,7 +144,7 @@ public class MainBot {
 
             JDABuilder shardBuilder = new JDABuilder(AccountType.BOT).setToken(config.getBotToken())
                     .addEventListener(new TwitchListener())
-                    //.addListener(new CleverbotListener())
+                    .addListener(new CleverbotListener())
                     .addEventListener(new BadWordsListener())
                     .addEventListener(new UserJoinLeaveListener())
                     .addEventListener(new BotKickedListener())
@@ -161,13 +161,13 @@ public class MainBot {
             for(JDA shard : jdaList) {
                 shard.getPresence().setGame(Game.playing(config.getBotActivity()));
             }
-            //System.out.println("Current activity " + jdaList.getPresence().getGame());
+            System.out.println("Current activity " + jdaList.getPresence().getGame());
 
             //Loading the previous state of the bot(before shutdown)
             Gson gson = new Gson();
             streamerList = gson.fromJson(config.getStreamerList(), new TypeToken<Map<String, String>>(){}.getType());
             autoRoleList = gson.fromJson(config.getAutoRoleList(), new TypeToken<Map<String, String>>(){}.getType());
-            //selfAssignedRolesList = gson.fromJson(config.getSelfAssignedRolesList(), new TypeToken<Map<String, ArrayList<String>>>(){}.getType());
+            selfAssignedRolesList = gson.fromJson(config.getSelfAssignedRolesList(), new TypeToken<Map<String, ArrayList<String>>>(){}.getType());
 
             badWords = gson.fromJson(config.getBadWords(), new TypeToken<Map<String, ArrayList<String>>>(){}.getType());
             prefixes = gson.fromJson(config.getPrefixes(), new TypeToken<Map<String, String>>(){}.getType());
@@ -186,8 +186,8 @@ public class MainBot {
 
             saveThread.run();
 
-            //System.out.println("Connected servers : " + jdaList.getGuilds().size());
-            //System.out.println("Concerned users : " + jdaList.getUsers().size());
+            System.out.println("Connected servers : " + jdaList.getGuilds().size());
+            System.out.println("Concerned users : " + jdaList.getUsers().size());
 
         } catch (InterruptedException | LoginException e) {
          System.out.println("No internet connection or invalid or missing token. Please edit config.blue and try again.");
@@ -214,14 +214,14 @@ public class MainBot {
 
         //Miscellaneous commands
         miscCommands.put("call", new CallCommand());
-        //miscCommands.put("embed", new CustomEmbedCommand());
+        miscCommands.put("embed", new CustomEmbedCommand());
         miscCommands.put("github", new GitHubCommand());
         miscCommands.put("info", new InfoCommand());
         miscCommands.put("invite", new InviteCommand());
         miscCommands.put("poll", new MultiPollCommand());
         miscCommands.put("sound", new PlaySoundCommand());
         miscCommands.put("qpoll", new QuickPollCommand());
-        //miscCommands.put("rank", new RankCommand());
+        miscCommands.put("rank", new RankCommand());
         miscCommands.put("rmsound", new RemoveSoundCommand());
         miscCommands.put("server", new ServerCommand());
         miscCommands.put("steam", new SteamStatusCommand());
